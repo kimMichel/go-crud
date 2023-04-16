@@ -16,6 +16,8 @@ func main() {
 	app.Post("/api/post", controllers.PostCreate)
 	app.Get("/api/posts", controllers.PostsIndex)
 	app.Get("/api/posts/:id", controllers.PostShow)
+	app.Put("/api/posts/:id", controllers.PostUpdate)
+	app.Delete("/api/posts/:id", controllers.PostDelete)
 
 	app.Listen(":3000")
 }

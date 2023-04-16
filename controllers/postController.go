@@ -56,3 +56,42 @@ func PostShow(c *fiber.Ctx) error {
 		"post": post,
 	})
 }
+
+func PostUpdate(c *fiber.Ctx) error {
+	// Get id off url
+	id := c.Params("id")
+
+	// Get the data from request body
+	var body struct {
+		Title string
+		Body  string
+	}
+
+	c.BodyParser(&body)
+
+	// Find Post were updating
+	var post models.Post
+	database.DB.First(&post, id)
+
+	// Update it
+	database.DB.Model(&post).Updates(models.Post{
+		Title: body.Title,
+		Body:  body.Body,
+	})
+
+	// Respond with them
+	return c.Status(200).JSON(fiber.Map{
+		"post": post,
+	})
+}
+
+func PostDelete(c *fiber.Ctx) error {
+	// Get the id off the url
+	id := c.Params("id")
+
+	// Delete the post
+	database.DB.Delete(&models.Post{}, id)
+
+	// Respond
+	return c.SendStatus(200)
+}
